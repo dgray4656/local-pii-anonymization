@@ -27,6 +27,14 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules"
 ]
 
+
+
+
+dependencies = [
+    "cryptography>=3.4",
+    "argon2-cffi>=21.0"
+]
+
 [project.urls]
 Homepage = "https://github.com/dgray4656/local-pii-anonymization"
 Documentation = "https://github.com/dgray4656/local-pii-anonymization#readme"
@@ -40,10 +48,6 @@ ner = ["spacy>=3.0", "spacy-lookups-data"]
 dev = ["pytest>=6.0", "black", "flake8", "mypy"]
 
 # Project dependencies (as a list of strings)
-dependencies = [
-    "cryptography>=3.4",
-    "argon2-cffi>=21.0"
-]
 
 [tool.setuptools]
 # We are using a flat layout, so we specify the package directly
