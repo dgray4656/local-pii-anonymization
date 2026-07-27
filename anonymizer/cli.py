@@ -21,7 +21,7 @@ def cmd_anonymize(args):
     """Handle the anonymize subcommand."""
     # Read input
     if args.input:
-        with open(args.input, 'r', encoding='utf-8') as f:
+        with open(args.input, 'r', encoding='utf-8', newline='') as f:
             text = f.read()
     else:
         text = sys.stdin.read()
@@ -38,7 +38,7 @@ def cmd_anonymize(args):
     
     # Write output
     if args.output:
-        with open(args.output, 'w', encoding='utf-8') as f:
+        with open(args.output, 'w', encoding='utf-8', newline='') as f:
             f.write(result["anonymized_text"])
     else:
         sys.stdout.write(result["anonymized_text"])
@@ -57,13 +57,13 @@ def cmd_deanonymize(args):
     """Handle the deanonymize subcommand."""
     # Read input
     if args.input:
-        with open(args.input, 'r', encoding='utf-8') as f:
+        with open(args.input, 'r', encoding='utf-8', newline='') as f:
             text = f.read()
     else:
         text = sys.stdin.read()
     
     # Read mapping
-    with open(args.mapping, 'r', encoding='utf-8') as f:
+        with open(args.mapping, 'r', encoding='utf-8', newline='') as f:
         mapping = f.read()
     
     # Create deanonymizer
@@ -74,7 +74,7 @@ def cmd_deanonymize(args):
     
     # Write output
     if args.output:
-        with open(args.output, 'w', encoding='utf-8') as f:
+        with open(args.output, 'w', encoding='utf-8', newline='') as f:
             f.write(result)
     else:
         sys.stdout.write(result)
