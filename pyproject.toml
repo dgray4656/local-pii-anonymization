@@ -16,6 +16,7 @@ keywords = ["pii", "anonymization", "privacy", "llm", "encryption", "spacy", "ne
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.8",
@@ -44,7 +45,6 @@ dependencies = [
     "argon2-cffi>=21.0"
 ]
 
-# Explicitly specify where to find packages and what to include
 [tool.setuptools]
 # We are using a flat layout, so we specify the package directly
 packages = ["anonymizer"]
