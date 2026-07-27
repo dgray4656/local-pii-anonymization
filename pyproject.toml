@@ -8,7 +8,7 @@ version = "0.1.0"
 description = "Local PII anonymization/de-anonymization system for cloud LLM privacy"
 readme = "README.md"
 requires-python = ">=3.8"
-license = {text = "MIT"}
+license = "MIT"
 authors = [
     {name = "Hermes Agent"}
 ]
@@ -39,8 +39,13 @@ anon = "anonymizer.__main__:main"
 ner = ["spacy>=3.0", "spacy-lookups-data"]
 dev = ["pytest>=6.0", "black", "flake8", "mypy"]
 
-# Project dependencies
+# Project dependencies (as a list of strings)
 dependencies = [
     "cryptography>=3.4",
     "argon2-cffi>=21.0"
 ]
+
+# Explicitly specify where to find packages and what to include
+[tool.setuptools]
+# We are using a flat layout, so we specify the package directly
+packages = ["anonymizer"]
