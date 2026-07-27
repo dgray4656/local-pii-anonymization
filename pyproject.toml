@@ -39,7 +39,7 @@ anon = "anonymizer.__main__:main"
 ner = ["spacy>=3.0", "spacy-lookups-data"]
 dev = ["pytest>=6.0", "black", "flake8", "mypy"]
 
-[project.dependencies]
+# Project dependencies
 dependencies = [
     "cryptography>=3.4",
     "argon2-cffi>=21.0"
