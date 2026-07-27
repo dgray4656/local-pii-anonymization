@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "local-pii-anonymization"
+version = "0.1.0"
+description = "Local PII anonymization/de-anonymization system for cloud LLM privacy"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [
+    {name = "Hermes Agent"}
+]
+keywords = ["pii", "anonymization", "privacy", "llm", "encryption", "spacy", "ner"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Security",
+    "Topic :: Software Development :: Libraries :: Python Modules"
+]
+
+[project.urls]
+Homepage = "https://github.com/dgray4656/local-pii-anonymization"
+Documentation = "https://github.com/dgray4656/local-pii-anonymization#readme"
+Repository = "https://github.com/dgray4656/local-pii-anonymization"
+
+[project.scripts]
+anon = "anonymizer.__main__:main"
+
+[project.optional-dependencies]
+ner = ["spacy>=3.0", "spacy-lookups-data"]
+dev = ["pytest>=6.0", "black", "flake8", "mypy"]
+
+[project.dependencies]
+cryptography>=3.4
+argon2-cffi>=21.0

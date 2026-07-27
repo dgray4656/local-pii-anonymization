@@ -1,0 +1,54 @@
+# Local PII Anonymization Configuration
+# Copy to config.yaml and customize
+
+# Pattern categories to enable (default: all)
+# Options: network, auth, pii, crypto, identifiers, all
+categories:
+  - all
+
+# NER Configuration
+ner:
+  enabled: false              # Enable spaCy NER (requires model download)
+  model: "en_core_web_sm"     # Model to use (en_core_web_sm, en_core_web_trf, etc.)
+  confidence_threshold: 0.8   # Minimum confidence for NER entities (0.0-1.0)
+
+# Encryption Configuration
+encryption:
+  algorithm: "AES-256-GCM"
+  kdf: "argon2id"
+  kdf_memory_kb: 1024         # Argon2 memory in KB
+  kdf_iterations: 3
+  kdf_parallelism: 1
+
+# Custom Patterns (add organization-specific patterns)
+# Each pattern: name, regex, token_prefix, flags, description
+custom_patterns:
+  - name: "employee_id"
+    pattern: "EMP-\\d{6}"
+    token_prefix: "EMP_ID"
+    flags: 0
+    description: "Internal employee IDs"
+  
+  - name: "ticket_id"
+    pattern: "TKT-\\d{8}"
+    token_prefix: "TICKET"
+    flags: 0
+    description: "Support ticket IDs"
+
+  - name: "internal_api_key"
+    pattern: "sk-internal-[a-zA-Z0-9]{32}"
+    token_prefix: "INTERNAL_API_KEY"
+    flags: 0
+    description: "Internal service API keys"
+
+# Output Configuration
+output:
+  mapping_extension_encrypted: ".anonmap"
+  mapping_extension_plain: ".anonmap.json"
+  preserve_line_endings: true
+
+# Logging (optional)
+logging:
+  level: "INFO"               # DEBUG, INFO, WARNING, ERROR
+  log_mappings: false         # WARNING: logs original PII if true
+  log_replacements: false
