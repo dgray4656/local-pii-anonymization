@@ -3,7 +3,7 @@ import sys
 import os
 
 from . import __version__
-from .anonymizer import Anonymizer, Deanonymizer
+from . import Anonymizer, Deanonymizer
 
 
 def gen_passphrase():
