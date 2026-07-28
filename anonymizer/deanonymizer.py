@@ -39,7 +39,7 @@ class Deanonymizer:
         for token in self._sorted_tokens:
             original = self.mapping[token]
             # Use regex with word boundaries to prevent partial matches
-            pattern = re.compile(r'(?<![A-Z0-9_])' + re.escape(token) + r'(?![A-Z0-9_])')
+            pattern = re.compile(r'(?<![A-Za-z0-9_])' + re.escape(token) + r'(?![A-Za-z0-9_])')
             result = pattern.sub(original, result)
         
         return result

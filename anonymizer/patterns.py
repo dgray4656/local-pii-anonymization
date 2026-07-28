@@ -15,7 +15,7 @@ BUILTIN_PATTERNS = [
      "prefix": "MAC", "description": "MAC addresses"},
     {"key": "url_creds", "pattern": r'https?://[^\s]+:[^\s]+@[^\s]+', 
      "prefix": "URL_CREDS", "description": "URLs with embedded credentials"},
-    {"key": "domain", "pattern": r'\b(?:[a-zA-Z0-9](?:[a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}\b', 
+    {"key": "domain", "pattern": r'(?<!@)(?:\b(?:[a-zA-Z0-9](?:[a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}\b)(?!@)', 
      "prefix": "DOMAIN", "description": "Domain names"},
     
     # Auth/Secrets

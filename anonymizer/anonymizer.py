@@ -105,6 +105,11 @@ class Anonymizer:
                 if any(m["original"] == original and m["start"] == match.start() 
                        for m in matches_found):
                     continue
+                # Skip if this match is entirely inside an already-matched region
+                if any(m["start"] <= match.start() and match.end() <= m["end"]
+                       for m in matches_found):
+                    continue
+
                 
                 token = self._get_next_token(pattern_info["prefix"])
                 self._token_mapping[token] = original
