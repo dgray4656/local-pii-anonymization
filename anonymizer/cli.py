@@ -1,9 +1,11 @@
 import argparse
 import sys
 import os
+import json
 
 from . import __version__
 from . import Anonymizer, Deanonymizer
+from .crypto import encrypt_mapping
 
 
 def gen_passphrase():
@@ -45,6 +47,18 @@ def cmd_anonymize(args):
     else:
         sys.stdout.write(result["anonymized_text"])
 
+    # Write mapping file if specified
+    if args.mapping:
+        if args.no_encrypt:
+            # Save as plain JSON
+            with open(args.mapping, "w", encoding="utf-8") as f:
+                json.dump(anonymizer._token_mapping, f, indent=2)
+        else:
+            # Encrypt and save
+            encrypted_mapping = encrypt_mapping(anonymizer._token_mapping, args.passphrase or "")
+            with open(args.mapping, "w", encoding="utf-8") as f:
+                f.write(encrypted_mapping)
+
     if args.verbose:
         print(f"Anonymized {len(result['mapping'])} entities", file=sys.stderr)
 
@@ -63,7 +77,12 @@ def cmd_deanonymize(args):
         mapping = f.read()
 
     # Create deanonymizer
-    deanonymizer = Deanonymizer(mapping=mapping, passphrase=args.passphrase or "")
+    # Handle encrypted vs plain mapping
+    if args.no_encrypt:
+        # Mapping is plain JSON, no decryption needed
+        deanonymizer = Deanonymizer(mapping=mapping, passphrase="")
+    else:
+        deanonymizer = Deanonymizer(mapping=mapping, passphrase=args.passphrase or "")
 
     # De-anonymize
     result = deanonymizer.deanonymize(text)
@@ -144,6 +163,7 @@ def main():
     anon_parser.add_argument('--category', action='append',
                             choices=['network', 'auth', 'pii', 'crypto', 'identifiers', 'all'],
                             help='Categories to enable (can be used multiple times)')
+    anon_parser.add_argument('--no-encrypt', action='store_true', help='Save mapping as plain JSON (not encrypted)')
     anon_parser.set_defaults(func=cmd_anonymize)
 
     # deanonymize
@@ -151,6 +171,7 @@ def main():
     deanon_parser.add_argument('-i', '--input', help='Input file (default: stdin)')
     deanon_parser.add_argument('-o', '--output', help='Output file (default: stdout)')
     deanon_parser.add_argument('-m', '--mapping', required=True, help='Mapping file')
+    deanon_parser.add_argument('--no-encrypt', action='store_true', help='Save mapping as plain JSON (not encrypted)')
     deanon_parser.set_defaults(func=cmd_deanonymize)
 
     # test

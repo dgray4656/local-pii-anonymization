@@ -27,8 +27,8 @@ def encrypt_mapping(mapping: dict, passphrase: str) -> str:
         salt=salt,
         length=32,  # 256 bits
         memory_cost=1024,  # 1 MB
-        time_cost=3,
-        parallelism=1
+        iterations=3,
+        lanes=1
     )
     key = kdf.derive(passphrase.encode('utf-8'))
     
@@ -42,7 +42,7 @@ def encrypt_mapping(mapping: dict, passphrase: str) -> str:
     combined = salt + nonce + ciphertext
     return b64encode(combined).decode('utf-8')
 
-def decrypt_mapping(encrypted_data: str, passphrase: str) -> dict:
+def decrypt_mapping(encoded_data: str, passphrase: str) -> dict:
     """
     Decrypt a mapping dictionary using Argon2id + AES-256-GCM.
     
@@ -54,9 +54,14 @@ def decrypt_mapping(encrypted_data: str, passphrase: str) -> dict:
         Dictionary mapping tokens to original values
     """
     if not passphrase:
-        # Assume JSON if no passphrase
+        # Try to parse as plain JSON first (for --no-encrypt mode)
         try:
-            return json.loads(b64decode(encrypted_data).decode('utf-8'))
+            return json.loads(encoded_data)
+        except json.JSONDecodeError:
+            pass
+        # Fall back to base64 encoded JSON (legacy format)
+        try:
+            return json.loads(b64decode(encoded_data).decode('utf-8'))
         except (json.JSONDecodeError, UnicodeDecodeError):
             raise ValueError("Invalid mapping data")
     
@@ -79,8 +84,8 @@ def decrypt_mapping(encrypted_data: str, passphrase: str) -> dict:
         salt=salt,
         length=32,
         memory_cost=1024,
-        time_cost=3,
-        parallelism=1
+        iterations=3,
+        lanes=1
     )
     key = kdf.derive(passphrase.encode('utf-8'))
     
